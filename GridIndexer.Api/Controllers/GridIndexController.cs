@@ -4,17 +4,17 @@ namespace InvantiTestApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class IndexController : ControllerBase
+public class GridIndexController : ControllerBase
 {
     private readonly GridIndexer _indexer;
     
-    public IndexController(GridIndexer indexer)
+    public GridIndexController(GridIndexer indexer)
     {
         _indexer = indexer;
     }
 
     // index/a1
-    [HttpGet("{index}")]
+    [HttpGet("index")]
     public ActionResult<object> GetCoordByIndex(string index)
     {
         var coords = _indexer.GetCoordinateFromIndex(index);
@@ -23,6 +23,18 @@ public class IndexController : ControllerBase
         {
             x = coords.row, 
             y = coords.col
+        };;
+    }
+    
+    // coord/row=1&col=1
+    [HttpGet("coord")]
+    public ActionResult<object> GetIndexFromCoordinate([FromQuery]int row, [FromQuery]int col)
+    {
+        var index = _indexer.GetIndexFromCoordinate(row, col);
+        
+        return new
+        {
+            index = index
         };;
     }
 }
